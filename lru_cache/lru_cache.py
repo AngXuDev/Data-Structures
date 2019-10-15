@@ -25,13 +25,16 @@ class LRUCache:
 
     def get(self, key):
         if key in self.cache:
-            # self.storage.delete(self.storage.get_node(key))
-            # self.storage.add_to_tail(key)
             self.storage.move_to_end(self.storage.get_node(key))
-            # _, node = self.cache[key]
-            # self.storage.move_to_end(node)
-            return self.cache.get(key, None)
+            return self.cache.get(key)
         print("self.cache :", self.cache)
+
+    # O(1) solution
+    # def get(self, key):
+    #     if key in self.cache:
+    #         node = self.cache[key]
+    #         self.storage.move_to_end(node)
+    #         return self.cache.get(key).value[1]
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -47,16 +50,22 @@ class LRUCache:
     def set(self, key, value):
         if key in self.cache:
             self.cache[key] = value
-            # self.storage.delete(self.storage.get_node(key))
-            # self.storage.add_to_tail(key)
-            # _, node = self.cache[key]
-            # self.storage.move_to_end(node)
             self.storage.move_to_end(self.storage.get_node(key))
-        elif len(self.storage) < self.limit:
-            self.storage.add_to_tail(key)
-            self.cache[key] = value
-        elif len(self.storage) >= self.limit:
+            return
+        if len(self.storage) >= self.limit:
             self.cache.pop(self.storage.remove_from_head(), None)
-            self.storage.add_to_tail(key)
-            self.cache[key] = value
+        self.storage.add_to_tail(key)
+        self.cache[key] = value
         print("self.cache :", self.cache)
+
+    # O(1) solution
+    # def set(self, key, value):
+    #     if key in self.cache:
+    #         node = self.cache[key]
+    #         node.value = (key, value)
+    #         self.storage.move_to_end(node)
+    #         return
+    #     if len(self.storage) >= self.limit:
+    #         del self.cache[self.storage.head.value[0]]
+    #     self.storage.add_to_tail((key, value))
+    #     self.cache[key] = self.storage.tail
