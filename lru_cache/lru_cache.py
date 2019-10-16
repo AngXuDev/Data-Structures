@@ -23,18 +23,25 @@ class LRUCache:
     key-value pair doesn't exist in the cache.
     """
 
-    def get(self, key):
-        if key in self.cache:
-            self.storage.move_to_end(self.storage.get_node(key))
-            return self.cache.get(key)
-        print("self.cache :", self.cache)
+    # def get(self, key):
+    #     if key in self.cache:
+    #         self.storage.move_to_end(self.storage.get_node(key))
+    #         return self.cache.get(key)
+    #     print("self.cache :", self.cache)
 
     # O(1) solution
     # def get(self, key):
     #     if key in self.cache:
     #         node = self.cache[key]
     #         self.storage.move_to_end(node)
-    #         return self.cache.get(key).value[1]
+    #         return node.value[1]
+
+    # Experimenting
+    def get(self, key):
+        if key in self.cache:
+            self.storage.delete(key)
+            self.storage.add_to_tail(key)
+            return self.cache.get(key)
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -47,16 +54,16 @@ class LRUCache:
     the newly-specified value.
     """
 
-    def set(self, key, value):
-        if key in self.cache:
-            self.cache[key] = value
-            self.storage.move_to_end(self.storage.get_node(key))
-            return
-        if len(self.storage) >= self.limit:
-            self.cache.pop(self.storage.remove_from_head(), None)
-        self.storage.add_to_tail(key)
-        self.cache[key] = value
-        print("self.cache :", self.cache)
+    # def set(self, key, value):
+    #     if key in self.cache:
+    #         self.cache[key] = value
+    #         self.storage.move_to_end(self.storage.get_node(key))
+    #         return
+    #     if len(self.storage) >= self.limit:
+    #         self.cache.pop(self.storage.remove_from_head(), None)
+    #     self.storage.add_to_tail(key)
+    #     self.cache[key] = value
+    #     print("self.cache :", self.cache)
 
     # O(1) solution
     # def set(self, key, value):
@@ -69,3 +76,17 @@ class LRUCache:
     #         del self.cache[self.storage.head.value[0]]
     #     self.storage.add_to_tail((key, value))
     #     self.cache[key] = self.storage.tail
+
+    # Experimenting
+    def set(self, key, value):
+        if key in self.cache:
+            self.cache[key] = value
+            self.storage.delete(key)
+            self.storage.add_to_tail(key)
+            return
+        if len(self.storage) >= self.limit:
+            print(self.storage.head.value)
+            self.cache.pop(self.storage.remove_from_head(), None)
+        self.storage.add_to_tail(key)
+        self.cache[key] = value
+        print("self.cache :", self.cache)
