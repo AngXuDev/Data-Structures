@@ -119,23 +119,6 @@ class DoublyLinkedList:
             self.length -= 1
             self.add_to_tail(value)
 
-    # def delete(self, node):
-    #     self.length -= 1
-    #     if not self.head and not self.tail:
-    #         return
-    #     if self.head == self.tail:
-    #         self.head = None
-    #         self.tail = None
-    #     elif self.head == node:
-    #         self.head = node.next
-    #         node.delete()
-    #     elif self.tail == node:
-    #         self.tail = node.prev
-    #         node.delete()
-    #     else:
-    #         node.delete()
-
-    # Experimenting
     def delete(self, node):
         self.length -= 1
         if not self.head and not self.tail:
@@ -145,12 +128,29 @@ class DoublyLinkedList:
             self.tail = None
         elif self.head == node:
             self.head = node.next
-            # node.delete()
+            node.delete()
         elif self.tail == node:
             self.tail = node.prev
-            # node.delete()
-        # else:
-        #     node.delete()
+            node.delete()
+        else:
+            node.delete()
+
+    # Experimenting
+    # def delete(self, node):
+    #     self.length -= 1
+    #     if not self.head and not self.tail:
+    #         return
+    #     if self.head == self.tail:
+    #         self.head = None
+    #         self.tail = None
+    #     elif self.head == node:
+    #         self.head = node.next
+    #         # node.delete()
+    #     elif self.tail == node:
+    #         self.tail = node.prev
+    #         # node.delete()
+    #     # else:
+    #     #     node.delete()
 
     def get_max(self):
         if not self.head:
