@@ -1,3 +1,6 @@
+from doubly_linked_list import DoublyLinkedList
+
+
 class LRUCache:
     """
     Our LRUCache class keeps track of the max number of nodes it
@@ -6,8 +9,11 @@ class LRUCache:
     order, as well as a storage dict that provides fast access
     to every node stored in the cache.
     """
+
     def __init__(self, limit=10):
-        pass
+        self.limit = limit
+        self.storage = DoublyLinkedList()
+        self.cache = {}
 
     """
     Retrieves the value associated with the given key. Also
@@ -16,8 +22,26 @@ class LRUCache:
     Returns the value associated with the key or None if the
     key-value pair doesn't exist in the cache.
     """
+
+    # def get(self, key):
+    #     if key in self.cache:
+    #         self.storage.move_to_end(self.storage.get_node(key))
+    #         return self.cache.get(key)
+    #     print("self.cache :", self.cache)
+
+    # O(1) solution
+    # def get(self, key):
+    #     if key in self.cache:
+    #         node = self.cache[key]
+    #         self.storage.move_to_end(node)
+    #         return node.value[1]
+
+    # Experimenting
     def get(self, key):
-        pass
+        if key in self.cache:
+            node = self.cache[key]
+            self.storage.move_to_end(node)
+            return self.cache.get(key)
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -29,5 +53,40 @@ class LRUCache:
     want to overwrite the old value associated with the key with
     the newly-specified value.
     """
+
+    # def set(self, key, value):
+    #     if key in self.cache:
+    #         self.cache[key] = value
+    #         self.storage.move_to_end(self.storage.get_node(key))
+    #         return
+    #     if len(self.storage) >= self.limit:
+    #         self.cache.pop(self.storage.remove_from_head(), None)
+    #     self.storage.add_to_tail(key)
+    #     self.cache[key] = value
+    #     print("self.cache :", self.cache)
+
+    # O(1) solution
+    # def set(self, key, value):
+    #     if key in self.cache:
+    #         node = self.cache[key]
+    #         node.value = (key, value)
+    #         self.storage.move_to_end(node)
+    #         return
+    #     if len(self.storage) >= self.limit:
+    #         del self.cache[self.storage.head.value[0]]
+    #     self.storage.add_to_tail((key, value))
+    #     self.cache[key] = self.storage.tail
+
+    # Experimenting
     def set(self, key, value):
-        pass
+        if key in self.cache:
+            self.cache[key] = value
+            node = (key, key)
+            self.storage.move_to_end(node)
+            return
+        if len(self.storage) >= self.limit:
+            print(self.storage.head.value)
+            self.cache.pop(self.storage.remove_from_head(), None)
+        self.storage.add_to_tail((key, key))
+        self.cache[key] = value
+        print("self.cache :", self.cache)
